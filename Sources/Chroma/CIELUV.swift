@@ -1,20 +1,41 @@
 import Darwin
 
 /// The CIELUV components of a color - lightness (L) and chromaticity (u,v).
-struct CIELUV {
+public struct CIELUV {
     /// The lightness component of the color, in the range [0, 100] (darkest to brightest).
-    var L: Double
+    public let L: Double
     /// The green-red chromaticity component of the color, typically in the range [-100, 100].
-    var u: Double
+    public let u: Double
     /// The blue-yellow chromaticity component of the color, typically in the range [-100, 100].
-    var v: Double
+    public let v: Double
+
+    /// Initializes a CIELUV from components.
+    ///
+    /// - parameter l: The lightness component of the color, in the range [0, 100] (darkest to brightest).
+    /// - parameter u: The green-red chromaticity component of the color, typically in the range [-100, 100].
+    /// - parameter v: The blue-yellow chromaticity component of the color, typically in the range [-100, 100].
+    public init(L: Double, u: Double, v: Double) {
+        self.L = L
+        self.u = u
+        self.v = v
+    }
 }
 
 extension RGB {
     /// Initializes a color from CIELUV components.
+    ///
+    /// - parameter l: The lightness component of the color, in the range [0, 100] (darkest to brightest).
+    /// - parameter u: The green-red chromaticity component of the color, typically in the range [-100, 100].
+    /// - parameter v: The blue-yellow chromaticity component of the color, typically in the range [-100, 100].
+    public init(l: Double, u: Double, v: Double) {
+        self.init(CIELUV(L: l, u: u, v: v))
+    }
+    
+    /// Initializes a color from CIELUV components.
+    /// 
     /// - parameter Luv: The components used to initialize the color.
     /// - parameter alpha: The alpha value of the color.
-    init(_ Luv: CIELUV) {
+    public init(_ Luv: CIELUV) {
         func fL(_ t: Double) -> Double {
             if t <= Constant.κ * Constant.ϵ {
                 return t / Constant.κ
@@ -40,7 +61,7 @@ extension RGB {
     }
 
     /// The CIELUV components of the color using a d65 illuminant and 2° standard observer.
-    var Luv: CIELUV {
+    public var Luv: CIELUV {
         func fL(_ t: Double) -> Double {
             if t <= Constant.ϵ {
                 return t * Constant.κ

@@ -1,20 +1,41 @@
 import Darwin
 
 /// The CIELAB components of a color - lightness (L) and chromaticity (a,b).
-struct CIELAB {
+public struct CIELAB {
     /// The lightness component of the color, in the range [0, 100] (darkest to brightest).
-    var L: Double
+    public let L: Double
     /// The green-red chromaticity component of the color, typically in the range [-128, 128].
-    var a: Double
+    public let a: Double
     /// The blue-yellow chromaticity component of the color, typically in the range [-128, 128].
-    var b: Double
+    public let b: Double
+
+    /// Initializes a CIELAB from components.
+    ///
+    /// - parameter l: The lightness component of the color, in the range [0, 100] (darkest to brightest).
+    /// - parameter a: The green-red chromaticity component of the color, typically in the range [-128, 128].
+    /// - parameter b: The blue-yellow chromaticity component of the color, typically in the range [-128, 128].
+    public init(L: Double, a: Double, b: Double) {
+        self.L = L
+        self.a = a
+        self.b = b
+    }
 }
 
 extension RGB {
+    /// Initializes an RGB from CIELAB components.
+    ///
+    /// - parameter l: The lightness component of the color, in the range [0, 100] (darkest to brightest).
+    /// - parameter a: The green-red chromaticity component of the color, typically in the range [-128, 128].
+    /// - parameter b: The blue-yellow chromaticity component of the color, typically in the range [-128, 128].
+    public init(l: Double, a: Double, b: Double) {
+        self.init(CIELAB(L: l, a: a, b: b))
+    }
+
     /// Initializes a color from CIELAB components.
+    /// 
     /// - parameter Lab: The components used to initialize the color.
     /// - parameter alpha: The alpha value of the color.
-    init(_ Lab: CIELAB) {
+    public init(_ Lab: CIELAB) {
         func fn(_ t: Double) -> Double {
             if t > Constant.δ {
                 return pow(t, 3.0)
@@ -37,7 +58,7 @@ extension RGB {
     }
 
     /// The CIELAB components of the color using a d65 illuminant and 2° standard observer.
-    var Lab: CIELAB {
+    public var Lab: CIELAB {
         func fn(_ t: Double) -> Double {
             if t > Constant.δ³ {
                 return pow(t, Constant.⅓)

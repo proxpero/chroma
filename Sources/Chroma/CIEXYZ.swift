@@ -1,18 +1,44 @@
 import Darwin
 
 /// The CIE 1931 XYZ components of a color - luminance (Y) and chromaticity (X,Z).
-struct CIEXYZ: Equatable {
+public struct CIEXYZ: Equatable {
     /// A mix of cone response curves chosen to be orthogonal to luminance and
     /// non-negative, in the range [0, 95.047].
-    let X: Double
+    public let X: Double
     /// The luminance component of the color, in the range [0, 100].
-    let Y: Double
+    public let Y: Double
     /// Somewhat equal to blue, or the "S" cone response, in the range [0, 108.883].
-    let Z: Double
+    public let Z: Double
+
+    /// Initializes a CIEXYZ with the CIE 1931 XYZ components of a color.
+    ///
+    /// - parameter x: A mix of cone response curves chosen to be orthogonal to luminance and non-negative, in the range [0, 95.047].
+    /// - parameter y: The luminance component of the color, in the range [0, 100].
+    /// - parameter z: Somewhat equal to blue, or the "S" cone response, in the range [0, 108.883].
+    public init(X: Double, Y: Double, Z: Double) {
+        self.X = X
+        self.Y = Y
+        self.Z = Z
+    }
 }
 
 extension RGB {
-    init(_ ciexyz: CIEXYZ) {
+    /// Initializes an RGB with the CIE 1931 XYZ components of a color.
+    ///
+    /// - parameter x: A mix of cone response curves chosen to be orthogonal to luminance and non-negative, in the range [0, 95.047].
+    /// - parameter y: The luminance component of the color, in the range [0, 100].
+    /// - parameter z: Somewhat equal to blue, or the "S" cone response, in the range [0, 108.883].
+    public init(x: Double, y: Double, z: Double) {
+        let x = max(0, min(95.047, x))
+        let y = max(0, min(100.000, y))
+        let z = max(0, min(108.883, z))
+        self.init(CIEXYZ(X: x, Y: y, Z: z))
+    }
+
+    /// Initialize an RGB with the CIE 1931 XYZ components of a color.
+    ///
+    /// - parameter ciexyz: A `CIEXYZ` instance.
+    public init(_ ciexyz: CIEXYZ) {
         let X = ciexyz.X / 100.0
         let Y = ciexyz.Y / 100.0
         let Z = ciexyz.Z / 100.0
@@ -33,7 +59,7 @@ extension RGB {
     }
 
     /// The CIE 1931 XYZ components of the color.
-    var XYZ: CIEXYZ {
+    public var XYZ: CIEXYZ {
         // sRGB (D65) gamma correction - inverse companding to get linear values
         let r = (self.red > 0.03928) ? pow((self.red + 0.055) / 1.055, 2.4) : (self.red / 12.92)
         let g = (self.green > 0.03928) ? pow((self.green + 0.055) / 1.055, 2.4) : (self.green / 12.92)

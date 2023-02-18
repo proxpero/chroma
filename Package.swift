@@ -19,11 +19,7 @@ let package = Package(
             dependencies: []
         ),
         .testTarget(
-            name: "ApiTests",
-            dependencies: ["Chroma"]
-        ),
-        .testTarget(
-            name: "InternalTests",
+            name: "ChromaTests",
             dependencies: ["Chroma"]
         ),
     ]

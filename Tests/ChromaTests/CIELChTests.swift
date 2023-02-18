@@ -2,6 +2,12 @@ import XCTest
 @testable import Chroma
 
 final class CIELChTests: XCTestCase {
+    func testCIELCh() {
+        XCTAssertEqual(RGB(l: 100, c: 0, h: 158.2).hex, "#FFFFFF")
+        XCTAssertEqual(RGB(l: 0, c: 0, h: 0).hex, "#000000")
+        XCTAssertEqual(RGB(l: 61.04, c: 33, h: 248.84).hex, "#469CC9")
+    }
+    
     func testFFFFFF() throws {
         let color = "#FFFFFF"
         let lch = try XCTUnwrap(RGB(hex: color)?.LCh_ab)

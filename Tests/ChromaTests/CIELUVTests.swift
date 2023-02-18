@@ -2,6 +2,12 @@ import XCTest
 @testable import Chroma
 
 final class CIELUVTests: XCTestCase {
+    func testCIELUV() {
+        XCTAssertEqual(RGB(l: 100, u: 0, v: 0).hex, "#FFFFFF")
+        XCTAssertEqual(RGB(l: 0, u: 0, v: 0).hex, "#000000")
+        XCTAssertEqual(RGB(l: 61.04, u: -33.8, v: -46.33).hex, "#469CC9")
+    }
+    
     func testFFFFFF() throws {
         let color = "#FFFFFF"
         let luv = try XCTUnwrap(RGB(hex: color)?.Luv)

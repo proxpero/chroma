@@ -7,14 +7,14 @@ extension RGB {
             hex = hex.dropFirst(1)
         }
 
-        guard let value = UInt32(hex, radix: 16) else {
+        guard let value = Int(hex, radix: 16) else {
             return nil
         }
 
         self.init(value)
     }
 
-    init(_ value: UInt32) {
+    init(_ value: Int) {
         let red = (value & 0xFF0000) >> 16
         let green = (value & 0x00FF00) >> 8
         let blue = (value & 0x0000FF) >> 0

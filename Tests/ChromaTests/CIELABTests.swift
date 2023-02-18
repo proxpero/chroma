@@ -2,6 +2,12 @@ import XCTest
 @testable import Chroma
 
 final class CIELABTests: XCTestCase {
+    func testCIELAB() {
+        XCTAssertEqual(RGB(l: 100, a: 0, b: 0).hex, "#FFFFFF")
+        XCTAssertEqual(RGB(l: 0, a: 0, b: 0).hex, "#000000")
+        XCTAssertEqual(RGB(l: 61.04, a: -12, b: -30.7).hex, "#469CC9")
+    }
+    
     func testFFFFFF() throws {
         let color = "#FFFFFF"
         let lab = try XCTUnwrap(RGB(hex: color)?.Lab)
