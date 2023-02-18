@@ -33,6 +33,15 @@ extension PlatformColor {
         self.init(rgb: rgb, alpha: alpha)
     }
 
+    public convenience init?(hex: String, alpha: Double = 1) {
+        guard let rgb = RGB(hex: hex) else {
+            return nil
+        }
+
+        self.init(rgb: rgb, alpha: alpha)
+    }
+
+    #if canImport(AppKit)
     public var rgb: RGB {
         RGB(
             red: self.redComponent,
@@ -44,14 +53,27 @@ extension PlatformColor {
     public var hex: String {
         self.rgb.hex
     }
+    #endif
 
-    public convenience init?(hex: String, alpha: Double = 1) {
-        guard let rgb = RGB(hex: hex) else {
-            return nil
-        }
+    #if canImport(UIKit)
+    public var rgb: RGB {
+        var red: CGFloat = .nan
+        var green: CGFloat = .nan
+        var blue: CGFloat = .nan
 
-        self.init(rgb: rgb, alpha: alpha)
+        self.getRed(&red, green: &green, blue: &blue, alpha: nil)
+
+        return RGB(
+            red: red,
+            green: green,
+            blue: blue
+        )
     }
+
+    public var hex: String {
+        self.rgb.hex
+    }
+    #endif
 }
 
 @available(macOS 10.15, *)
